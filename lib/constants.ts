@@ -92,14 +92,14 @@ export interface PortfolioItem {
 // =============================================================================
 
 export const SITE_CONFIG: SiteConfig = {
-  name: "[YOUR AGENCY NAME]",
+  name: "Kōdex",
   tagline: "We Build Websites That Drive Revenue",
   description:
     "We design and develop high-performance websites, e-commerce stores, and web applications. Fast delivery, affordable pricing, modern technology.",
   contact: {
-    email: "[YOUR EMAIL]",
-    phone: "[YOUR PHONE]",
-    whatsapp: "[YOUR WHATSAPP]",
+    email: "Kōdex782@gmail.com",
+    phone: "0743833384",
+    whatsapp: "0743833384",
   },
   social: {
     instagram: "[YOUR INSTAGRAM URL]",

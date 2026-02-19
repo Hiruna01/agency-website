@@ -108,7 +108,7 @@ export function Header() {
           type="button"
           onClick={() => setMobileMenuOpen((prev) => !prev)}
           className={cn(
-            "relative z-50 flex h-10 w-10 items-center justify-center rounded-lg transition-colors duration-200 md:hidden",
+            "relative z-50 flex h-11 w-11 items-center justify-center rounded-lg transition-colors duration-200 md:hidden",
             "text-brand-dark hover:bg-brand-surface"
           )}
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}

@@ -58,7 +58,7 @@ export function Hero() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
               <a
                 href={SITE_CONFIG.cta.href}
-                className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-brand-secondary to-brand-primary px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand-primary/20 transition-all duration-200 hover:shadow-xl hover:shadow-brand-primary/25 hover:brightness-110"
+                className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-gradient-to-r from-brand-secondary to-brand-primary px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-primary/20 transition-all duration-200 hover:shadow-xl hover:shadow-brand-primary/25 hover:brightness-110 sm:px-7 sm:py-3.5"
               >
                 {SITE_CONFIG.cta.label}
               </a>
@@ -72,7 +72,7 @@ export function Hero() {
                     window.scrollTo({ top: offset, behavior: "smooth" });
                   }
                 }}
-                className="inline-flex items-center justify-center rounded-full border border-brand-primary/20 px-7 py-3.5 text-sm font-semibold text-brand-primary transition-all duration-200 hover:border-brand-primary/40 hover:bg-brand-primary/5"
+                className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-brand-primary/20 px-6 py-3 text-sm font-semibold text-brand-primary transition-all duration-200 hover:border-brand-primary/40 hover:bg-brand-primary/5 sm:px-7 sm:py-3.5"
               >
                 See Our Work&nbsp;&darr;
               </a>

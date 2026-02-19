@@ -1,7 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npx shadcn@latest init:*)",
+      "Bash(curl:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx kill-port:*)",
+      "Bash(taskkill:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nScaffold agency website with landing page foundation\n\nSet up Next.js project with Tailwind v4, shadcn/ui, and Framer Motion.\nAdd brand design system, typed site constants, and core layout/section\ncomponents: Header \\(fixed, scroll-aware\\), Footer \\(4-column dark\\),\nHero \\(two-column with CTAs\\), and SocialProofBar \\(animated stats\\).\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")"
     ]
   }
 }

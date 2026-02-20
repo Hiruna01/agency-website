@@ -19,13 +19,13 @@ function TypingRotator() {
   }, []);
 
   return (
-    <span className="relative inline-block min-w-[180px] sm:min-w-[220px] md:min-w-[280px] lg:min-w-[320px]">
+    <span className="relative inline-block">
       <AnimatePresence mode="wait">
         <motion.span
           key={ROTATING_WORDS[wordIndex]}
-          initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
+          initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          exit={{ opacity: 0, y: -30, filter: "blur(8px)" }}
+          exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
           transition={{ duration: 0.4, ease: "easeOut" as const }}
           className="inline-block bg-gradient-to-r from-brand-accent via-sky-400 to-blue-400 bg-clip-text text-transparent"
         >
@@ -41,10 +41,12 @@ function AnimatedCounter({
   target,
   suffix,
   label,
+  shortLabel,
 }: {
   target: number;
   suffix: string;
   label: string;
+  shortLabel: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true });
@@ -71,12 +73,14 @@ function AnimatedCounter({
 
   return (
     <div ref={ref} className="text-center">
-      <span className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+      <span className="text-2xl font-bold text-white sm:text-3xl md:text-4xl lg:text-5xl">
         {count}
         {suffix}
       </span>
-      <span className="mt-1 block text-xs font-medium uppercase tracking-wider text-white/40 sm:text-sm">
-        {label}
+      {/* Short label on mobile, full label on sm+ */}
+      <span className="mt-0.5 block text-[10px] font-medium uppercase tracking-wider text-white/40 sm:mt-1 sm:text-xs md:text-sm">
+        <span className="sm:hidden">{shortLabel}</span>
+        <span className="hidden sm:inline">{label}</span>
       </span>
     </div>
   );
@@ -98,7 +102,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-screen flex-col overflow-hidden bg-[#050a15]"
+      className="relative flex min-h-[100svh] flex-col overflow-hidden bg-[#050a15]"
     >
       {/* ── Video Background ─────────────────────────────────────────── */}
       {/* Fallback gradient — sits behind video, visible until video loads */}
@@ -145,14 +149,14 @@ export function Hero() {
       </div>
 
       {/* ── Main Content ─────────────────────────────────────────────── */}
-      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center px-4 pt-24 pb-32 text-center md:px-6 lg:px-8">
+      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center px-5 pt-20 pb-6 text-center sm:px-6 sm:pt-24 sm:pb-8 md:px-6 md:pb-12 lg:px-8">
         {/* Eyebrow badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" as const }}
         >
-          <span className="inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.06] px-5 py-2 text-xs font-semibold uppercase tracking-[0.15em] text-white/70 backdrop-blur-md sm:text-sm">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/70 backdrop-blur-md sm:gap-2.5 sm:px-5 sm:py-2 sm:text-xs sm:tracking-[0.15em] md:text-sm">
             <span className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand-accent opacity-75" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-accent" />
@@ -166,7 +170,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" as const }}
-          className="mt-8 max-w-4xl text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
+          className="mt-6 max-w-4xl text-[1.75rem] font-extrabold leading-[1.1] tracking-tight text-white sm:mt-8 sm:text-4xl md:text-5xl md:leading-[1.08] lg:text-7xl"
         >
           We Build Websites
           <br />
@@ -178,7 +182,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" as const }}
-          className="mt-6 max-w-2xl text-base leading-relaxed text-white/50 sm:text-lg md:text-xl md:leading-relaxed"
+          className="mt-4 max-w-lg text-sm leading-relaxed text-white/50 sm:mt-6 sm:max-w-xl sm:text-base md:max-w-2xl md:text-lg md:leading-relaxed lg:text-xl"
         >
           High-performance websites, e-commerce stores, and web applications
           that help your business grow — delivered fast, priced fairly.
@@ -189,11 +193,11 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.8, ease: "easeOut" as const }}
-          className="mt-10 flex flex-col items-center gap-4 sm:flex-row"
+          className="mt-8 flex w-full flex-col items-center gap-3 sm:mt-10 sm:w-auto sm:flex-row sm:gap-4"
         >
           <a
             href={SITE_CONFIG.cta.href}
-            className="group inline-flex min-h-[52px] items-center gap-2 rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-brand-dark shadow-lg shadow-white/10 transition-all duration-200 hover:bg-white/90 hover:shadow-xl hover:shadow-white/15 sm:text-base"
+            className="group inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand-dark shadow-lg shadow-white/10 transition-all duration-200 hover:bg-white/90 hover:shadow-xl hover:shadow-white/15 sm:min-h-[52px] sm:w-auto sm:px-8 sm:py-3.5 sm:text-base"
           >
             {SITE_CONFIG.cta.label}
             <ChevronRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
@@ -209,10 +213,10 @@ export function Hero() {
                 window.scrollTo({ top: offset, behavior: "smooth" });
               }
             }}
-            className="group inline-flex min-h-[52px] items-center gap-2.5 rounded-full border border-white/15 px-8 py-3.5 text-sm font-semibold text-white/80 backdrop-blur-sm transition-all duration-200 hover:border-white/30 hover:bg-white/[0.06] hover:text-white sm:text-base"
+            className="group inline-flex min-h-[48px] w-full items-center justify-center gap-2.5 rounded-full border border-white/15 px-6 py-3 text-sm font-semibold text-white/80 backdrop-blur-sm transition-all duration-200 hover:border-white/30 hover:bg-white/[0.06] hover:text-white sm:min-h-[52px] sm:w-auto sm:px-8 sm:py-3.5 sm:text-base"
           >
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10">
-              <Play className="h-3.5 w-3.5 fill-white text-white" />
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 sm:h-8 sm:w-8">
+              <Play className="h-3 w-3 fill-white text-white sm:h-3.5 sm:w-3.5" />
             </span>
             See Our Work
           </a>
@@ -223,25 +227,25 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 1.0 }}
-          className="mt-8 flex items-center gap-1.5"
+          className="mt-6 flex items-center gap-1 sm:mt-8 sm:gap-1.5"
         >
           {Array.from({ length: 5 }).map((_, i) => (
             <Star
               key={i}
-              className="h-4 w-4 fill-amber-400 text-amber-400"
+              className="h-3.5 w-3.5 fill-amber-400 text-amber-400 sm:h-4 sm:w-4"
             />
           ))}
-          <span className="ml-2 text-sm text-white/35">
+          <span className="ml-1.5 text-xs text-white/35 sm:ml-2 sm:text-sm">
             4.9/5 from 40+ clients
           </span>
         </motion.div>
 
-        {/* Trusted by logos */}
+        {/* Trusted by logos — hidden on very small, shown from sm up */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 1.2 }}
-          className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:gap-x-8"
+          className="mt-4 hidden flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:mt-6 sm:flex sm:gap-x-8"
         >
           <span className="text-xs font-medium uppercase tracking-widest text-white/20">
             Trusted by
@@ -259,24 +263,39 @@ export function Hero() {
 
       {/* ── Bottom Stats Bar ─────────────────────────────────────────── */}
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 1.0, ease: "easeOut" as const }}
         className="relative z-10 border-t border-white/[0.06]"
       >
-        <div className="mx-auto grid max-w-[1280px] grid-cols-3 divide-x divide-white/[0.06] px-4 py-8 md:px-6 md:py-10 lg:px-8">
-          <AnimatedCounter target={200} suffix="+" label="Projects Delivered" />
-          <AnimatedCounter target={50} suffix="+" label="Happy Clients" />
-          <AnimatedCounter target={98} suffix="%" label="Satisfaction Rate" />
+        <div className="mx-auto grid max-w-[1280px] grid-cols-3 divide-x divide-white/[0.06] px-2 py-5 sm:px-4 sm:py-8 md:px-6 md:py-10 lg:px-8">
+          <AnimatedCounter
+            target={200}
+            suffix="+"
+            label="Projects Delivered"
+            shortLabel="Projects"
+          />
+          <AnimatedCounter
+            target={50}
+            suffix="+"
+            label="Happy Clients"
+            shortLabel="Clients"
+          />
+          <AnimatedCounter
+            target={98}
+            suffix="%"
+            label="Satisfaction Rate"
+            shortLabel="Satisfaction"
+          />
         </div>
       </motion.div>
 
-      {/* ── Scroll indicator ─────────────────────────────────────────── */}
+      {/* ── Scroll indicator — hidden on mobile, shown md+ ───────────── */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 0.5 }}
-        className="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 md:bottom-6"
+        className="absolute bottom-6 left-1/2 z-10 hidden -translate-x-1/2 md:block"
       >
         <motion.button
           animate={{ y: [0, 6, 0] }}
@@ -297,7 +316,6 @@ export function Hero() {
           <ArrowDown className="h-4 w-4" />
         </motion.button>
       </motion.div>
-
     </section>
   );
 }

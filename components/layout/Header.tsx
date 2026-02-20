@@ -71,7 +71,10 @@ export function Header() {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className="text-xl font-extrabold tracking-tight text-brand-dark transition-colors duration-200"
+          className={cn(
+            "text-xl font-extrabold tracking-tight transition-colors duration-200",
+            scrolled ? "text-brand-dark" : "text-white"
+          )}
         >
           {SITE_CONFIG.name}
         </a>
@@ -87,7 +90,7 @@ export function Header() {
                 "rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200",
                 scrolled
                   ? "text-brand-body hover:text-brand-primary hover:bg-brand-surface"
-                  : "text-brand-body hover:text-brand-primary hover:bg-brand-surface/60"
+                  : "text-white/80 hover:text-white hover:bg-white/10"
               )}
             >
               {link.label}
@@ -109,7 +112,9 @@ export function Header() {
           onClick={() => setMobileMenuOpen((prev) => !prev)}
           className={cn(
             "relative z-50 flex h-11 w-11 items-center justify-center rounded-lg transition-colors duration-200 md:hidden",
-            "text-brand-dark hover:bg-brand-surface"
+            scrolled
+              ? "text-brand-dark hover:bg-brand-surface"
+              : "text-white hover:bg-white/10"
           )}
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
         >

@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import {
   Palette,
   Code,
@@ -10,6 +9,7 @@ import {
   Rocket,
   type LucideIcon,
 } from "lucide-react";
+import { motion } from "framer-motion";
 import { SERVICES } from "@/lib/constants";
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -21,23 +21,44 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Rocket,
 };
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.1,
-    },
+const CARD_THEMES = [
+  {
+    bg: "bg-gradient-to-br from-blue-50 to-indigo-50",
+    iconBg: "bg-blue-100",
+    iconColor: "text-blue-600",
+    accent: "bg-blue-500",
   },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4, ease: "easeOut" as const },
+  {
+    bg: "bg-gradient-to-br from-emerald-50 to-teal-50",
+    iconBg: "bg-emerald-100",
+    iconColor: "text-emerald-600",
+    accent: "bg-emerald-500",
   },
-};
+  {
+    bg: "bg-gradient-to-br from-violet-50 to-purple-50",
+    iconBg: "bg-violet-100",
+    iconColor: "text-violet-600",
+    accent: "bg-violet-500",
+  },
+  {
+    bg: "bg-gradient-to-br from-amber-50 to-orange-50",
+    iconBg: "bg-amber-100",
+    iconColor: "text-amber-600",
+    accent: "bg-amber-500",
+  },
+  {
+    bg: "bg-gradient-to-br from-rose-50 to-pink-50",
+    iconBg: "bg-rose-100",
+    iconColor: "text-rose-600",
+    accent: "bg-rose-500",
+  },
+  {
+    bg: "bg-gradient-to-br from-cyan-50 to-sky-50",
+    iconBg: "bg-cyan-100",
+    iconColor: "text-cyan-600",
+    accent: "bg-cyan-500",
+  },
+];
 
 export function Services() {
   return (
@@ -56,42 +77,65 @@ export function Services() {
           </p>
         </div>
 
-        {/* Card Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          {SERVICES.map((service) => {
+        {/* Cards Grid */}
+        <div className="mx-auto mt-12 grid max-w-[1100px] grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 md:mt-16 md:gap-6">
+          {SERVICES.map((service, index) => {
             const Icon = ICON_MAP[service.iconName];
+            const theme = CARD_THEMES[index % CARD_THEMES.length];
             return (
               <motion.div
                 key={service.id}
-                variants={cardVariants}
-                className="group rounded-xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg sm:p-8"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.1,
+                  ease: [0.25, 0.46, 0.45, 0.94] as const,
+                }}
+                className={`${theme.bg} group rounded-2xl border border-gray-100/80 shadow-md transition-shadow hover:shadow-lg sm:rounded-3xl`}
               >
-                {/* Icon */}
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-brand-surface transition-colors duration-200 group-hover:bg-brand-secondary">
-                  {Icon && (
-                    <Icon className="h-7 w-7 text-brand-secondary transition-colors duration-200 group-hover:text-white" />
-                  )}
+                <div className="px-6 py-7 sm:px-7 sm:py-8">
+                  {/* Top row: Step number + Icon */}
+                  <div className="flex items-center justify-between">
+                    <div
+                      className={`flex h-12 w-12 items-center justify-center rounded-2xl ${theme.iconBg} sm:h-14 sm:w-14`}
+                    >
+                      {Icon && (
+                        <Icon
+                          className={`h-6 w-6 ${theme.iconColor} sm:h-7 sm:w-7`}
+                        />
+                      )}
+                    </div>
+                    <span className="text-sm font-semibold text-brand-muted">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="mt-5 text-lg font-bold text-brand-dark sm:text-xl">
+                    {service.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="mt-2 text-sm leading-relaxed text-brand-body">
+                    {service.description}
+                  </p>
+
+                  {/* Bottom accent bar */}
+                  <div className="mt-5 flex items-center gap-3 sm:mt-6">
+                    <div
+                      className={`h-1 w-10 rounded-full ${theme.accent} opacity-30`}
+                    />
+                    <div
+                      className={`h-1 w-4 rounded-full ${theme.accent} opacity-15`}
+                    />
+                  </div>
                 </div>
-
-                {/* Title */}
-                <h3 className="mt-5 text-xl font-semibold text-brand-primary">
-                  {service.title}
-                </h3>
-
-                {/* Description */}
-                <p className="mt-2.5 text-base leading-relaxed text-brand-body">
-                  {service.description}
-                </p>
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

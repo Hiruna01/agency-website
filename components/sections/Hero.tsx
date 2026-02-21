@@ -97,7 +97,29 @@ const CLIENT_LOGOS = [
 
 // ── Main Hero ───────────────────────────────────────────────────────────────
 export function Hero() {
-  const [videoLoaded, setVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoReady, setVideoReady] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const show = () => setVideoReady(true);
+
+    // If the video already has enough data (cached / fast load), fire immediately
+    if (video.readyState >= 3) {
+      show();
+      return;
+    }
+
+    video.addEventListener("canplay", show);
+    video.addEventListener("loadeddata", show);
+
+    return () => {
+      video.removeEventListener("canplay", show);
+      video.removeEventListener("loadeddata", show);
+    };
+  }, []);
 
   return (
     <section
@@ -107,32 +129,32 @@ export function Hero() {
       {/* ── Video Background ─────────────────────────────────────────── */}
       {/* Fallback gradient — sits behind video, visible until video loads */}
       <div
-        className={`absolute inset-0 bg-gradient-to-br from-[#0B1D3A] via-brand-primary/80 to-[#162D54] transition-opacity duration-1000 ${
-          videoLoaded ? "opacity-0" : "opacity-100"
+        className={`absolute inset-0 z-0 bg-gradient-to-br from-[#0B1D3A] via-brand-primary/80 to-[#162D54] transition-opacity duration-1000 ${
+          videoReady ? "opacity-0" : "opacity-100"
         }`}
       />
 
       {/* Video element */}
       <video
+        ref={videoRef}
         autoPlay
         loop
         muted
         playsInline
-        onLoadedData={() => setVideoLoaded(true)}
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${
-          videoLoaded ? "opacity-100" : "opacity-0"
+        className={`absolute inset-0 z-[1] h-full w-full object-cover transition-opacity duration-1000 ${
+          videoReady ? "opacity-100" : "opacity-0"
         }`}
       >
         <source src="/videos/hero-bg.mp4" type="video/mp4" />
       </video>
 
       {/* Dark overlays for text readability */}
-      <div className="absolute inset-0 bg-black/40" />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+      <div className="absolute inset-0 z-[2] bg-black/40" />
+      <div className="absolute inset-0 z-[2] bg-gradient-to-t from-black/60 via-transparent to-black/20" />
 
       {/* ── Subtle animated grain texture ────────────────────────────── */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        className="pointer-events-none absolute inset-0 z-[3] opacity-[0.03]"
         aria-hidden="true"
       >
         <svg width="100%" height="100%">
@@ -149,7 +171,7 @@ export function Hero() {
       </div>
 
       {/* ── Main Content ─────────────────────────────────────────────── */}
-      <div className="relative z-10 mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center px-5 pt-20 pb-6 text-center sm:px-6 sm:pt-24 sm:pb-8 md:px-6 md:pb-12 lg:px-8">
+      <div className="relative z-[5] mx-auto flex w-full max-w-[1280px] flex-1 flex-col items-center justify-center px-5 pt-20 pb-6 text-center sm:px-6 sm:pt-24 sm:pb-8 md:px-6 md:pb-12 lg:px-8">
         {/* Eyebrow badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -266,7 +288,7 @@ export function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 1.0, ease: "easeOut" as const }}
-        className="relative z-10 border-t border-white/[0.06]"
+        className="relative z-[5] border-t border-white/[0.06]"
       >
         <div className="mx-auto grid max-w-[1280px] grid-cols-3 divide-x divide-white/[0.06] px-2 py-5 sm:px-4 sm:py-8 md:px-6 md:py-10 lg:px-8">
           <AnimatedCounter
@@ -295,7 +317,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 0.5 }}
-        className="absolute bottom-6 left-1/2 z-10 hidden -translate-x-1/2 md:block"
+        className="absolute bottom-6 left-1/2 z-[5] hidden -translate-x-1/2 md:block"
       >
         <motion.button
           animate={{ y: [0, 6, 0] }}

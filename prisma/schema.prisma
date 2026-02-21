@@ -1,0 +1,62 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum BookingType {
+  CONSULTATION
+  PROJECT
+}
+
+enum BookingStatus {
+  NEW
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum ServiceType {
+  WEB_DESIGN
+  WEB_DEVELOPMENT
+  ECOMMERCE
+  UIUX_DESIGN
+  MAINTENANCE
+  LANDING_PAGES
+  OTHER
+}
+
+model Booking {
+  id            String        @id @default(uuid())
+  reference     String        @unique
+  type          BookingType
+  status        BookingStatus @default(NEW)
+
+  fullName      String
+  email         String
+  phone         String
+  source        String?
+
+  preferredDate DateTime?
+  preferredTime String?
+
+  service       ServiceType?
+  budgetRange   String?
+  timeline      String?
+
+  description   String?
+  telegramMsgId String?
+  isArchived    Boolean       @default(false)
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([status])
+  @@index([type])
+  @@index([createdAt])
+  @@index([service])
+}

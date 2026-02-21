@@ -14,7 +14,10 @@
       "Bash(timeout 8 npm run dev:*)",
       "Bash(npm uninstall:*)",
       "Bash(powershell -Command:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(npx next lint:*)",
+      "Bash(npm run lint)",
+      "Bash(npx prisma validate:*)"
     ]
   }
 }

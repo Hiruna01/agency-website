@@ -107,10 +107,34 @@ Note: SocialProofBar exists as a file but is NOT used in page.tsx (removed to av
 - Use Framer Motion only for scroll-triggered reveals, not complex animations.
 - Keep all sections in separate files under /components/sections/.
 - Alternate section backgrounds: white (#FFFFFF) and surface (#F8FAFC).
-- The primary CTA "Book a Free Consultation" links to "/book" (future page).
+- The primary CTA "Book a Free Consultation" links to "/book".
 
 ## Known Issues & Lessons Learned
 - Video `onLoadedData` React event may not fire for cached videos — use `useRef` + `useEffect` with `readyState >= 3` check + `canplay`/`loadeddata` event listeners instead
 - Lenis smooth scroll library (`useWindowScroll` mode) hijacks entire page scroll and can break absolute-positioned elements like video backgrounds — avoid using it
 - When doing scroll-based transform animations, NEVER call `getBoundingClientRect()` during scroll while also applying transforms — causes feedback loops/flickering. Cache positions on mount instead.
 - Scroll-stacking card effects need `overflow: hidden` on wrapper + `maxTranslateY` clamp to prevent cards escaping their container
+- Zod 4 uses `error: "message"` instead of `errorMap` for `z.enum()` custom error messages
+
+## Booking System
+- Route: /book (single form with consultation/project toggle)
+- API: POST /api/bookings (validated, rate-limited, writes to DB, sends Telegram)
+- Database: Supabase PostgreSQL via Prisma ORM
+- Notifications: Telegram Bot API (free, no SDK, HTTP POST only)
+- Validation: Zod schemas in /lib/validations/booking.ts (shared client + server)
+- Form: React Hook Form + Zod resolver
+- Rate limit: 5 requests per IP per hour (in-memory limiter)
+- Components: /components/booking/ (BookingConfirmation, BookingToast)
+- Prisma singleton: /lib/prisma.ts
+- Telegram utility: /lib/telegram.ts (sendBookingNotification, generateReference)
+
+## Environment Variables (in .env, NEVER committed)
+- DATABASE_URL — Supabase PostgreSQL connection string
+- DIRECT_URL — Supabase direct connection (for migrations)
+- TELEGRAM_BOT_TOKEN — Telegram bot API token
+- TELEGRAM_CHAT_ID — Your Telegram chat/group ID
+
+## New Dependencies
+- prisma, @prisma/client — ORM
+- zod — validation
+- react-hook-form, @hookform/resolvers — form handling
